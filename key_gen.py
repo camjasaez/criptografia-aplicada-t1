@@ -92,22 +92,6 @@ def generar_y_guardar_llaves(nombre_persona):
     guardar_llave_publica(llave_publica, nombre_archivo_publica)
 
 
-def ingresar_nombre(nombre_default):
-    """
-    Esta función solicita al usuario el nombre de una persona.
-
-    :param nombre_default: El nombre por defecto que se mostrará al usuario.
-    :type nombre_default: Str
-
-    :return: El nombre ingresado por el usuario.
-    :rtype: Str
-    """
-    nombre = input(f"Ingrese el nombre de la persona (default: {nombre_default}): ")
-    if nombre == "":
-        return nombre_default
-    return nombre
-
-
 def main():
     """
     Función principal del programa.
@@ -124,15 +108,10 @@ def main():
         os.makedirs("llaves")
 
     nombre_default = "Alice"
-    nombre = ingresar_nombre(nombre_default)
-    print(f"* => Generando llaves de {nombre} *" + "\n")
-    generar_y_guardar_llaves(nombre)
+    generar_y_guardar_llaves(nombre_default)
 
     nombre_default = "Bob"
-    nombre = ingresar_nombre(nombre_default)
-    generar_y_guardar_llaves(nombre)
-    print(f"* => Generando llaves de {nombre} *" + "\n")
-    generar_y_guardar_llaves(nombre)
+    generar_y_guardar_llaves(nombre_default)
 
     print("* => Finalizando ejecucion de key_gen *" + "\n")
 
