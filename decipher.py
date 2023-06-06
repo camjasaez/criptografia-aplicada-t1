@@ -79,14 +79,9 @@ def main():
     print("Texto descifrado: ", texto_descifrado)
 
     # Punto 3: Verificar la firma y genuinidad del mensaje
-
-    # with open("mensaje.txt", "rb") as f:
-    #     mensaje_original = f.read()
     with open("cifrado/Signature_Alice.sig", "rb") as f:
         firma = f.read()
 
-    # mensaje_falso = b"Este es un mensaje falso."  # Para probar la falsedad de la firma
-    #
 
     if verificar_firma(texto_descifrado, firma, llave_publica_alice):
         print("La firma es válida.")
