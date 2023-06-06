@@ -88,7 +88,7 @@ def generar_y_guardar_llaves(nombre_persona):
     llave_publica = llave_privada.public_key()
 
     # Almacenamiento de la llave pública en un archivo PEM
-    nombre_archivo_publica = f"llave_publica_{nombre_persona}.pem"
+    nombre_archivo_publica = f"llave_publica_{nombre_persona}.pub"
     guardar_llave_publica(llave_publica, nombre_archivo_publica)
 
 
