@@ -18,10 +18,7 @@ def generar_llaves():
     :return: Clave privada generada.
     :rtype: RSAPrivateKey
     """
-    return rsa.generate_private_key(
-        public_exponent=65537,
-        key_size=2048
-    )
+    return rsa.generate_private_key(public_exponent=65537, key_size=2048)
 
 
 def guardar_llave_privada(llave_privada, nombre_archivo):
@@ -36,13 +33,15 @@ def guardar_llave_privada(llave_privada, nombre_archivo):
 
     :return: None
     """
-    ruta_archivo = os.path.join('llaves', nombre_archivo)
-    with open(ruta_archivo, 'wb') as f:
-        f.write(llave_privada.private_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PrivateFormat.PKCS8,
-            encryption_algorithm=serialization.NoEncryption()
-        ))
+    ruta_archivo = os.path.join("llaves", nombre_archivo)
+    with open(ruta_archivo, "wb") as f:
+        f.write(
+            llave_privada.private_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PrivateFormat.PKCS8,
+                encryption_algorithm=serialization.NoEncryption(),
+            )
+        )
 
 
 # Guardamos las llaves en un archivo PEM
@@ -58,12 +57,14 @@ def guardar_llave_publica(llave_publica, nombre_archivo):
 
     :return: None
     """
-    ruta_archivo = os.path.join('llaves', nombre_archivo)
-    with open(ruta_archivo, 'wb') as f:
-        f.write(llave_publica.public_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PublicFormat.SubjectPublicKeyInfo
-        ))
+    ruta_archivo = os.path.join("llaves", nombre_archivo)
+    with open(ruta_archivo, "wb") as f:
+        f.write(
+            llave_publica.public_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PublicFormat.SubjectPublicKeyInfo,
+            )
+        )
 
 
 # Generamos y guardamos las llaves para una persona
@@ -72,7 +73,7 @@ def generar_y_guardar_llaves(nombre_persona):
     Esta función genera y guarda un par de llaves pública y privada RSA para una persona.
 
     :param nombre_persona: El nombre de la persona para la cual se generarán las llaves.
-    :type nombre_persona: str
+    :type nombre_persona: Str
 
     :return: None
     """
@@ -80,15 +81,31 @@ def generar_y_guardar_llaves(nombre_persona):
     llave_privada = generar_llaves()
 
     # Almacenamiento de la llave privada en un archivo PEM
-    nombre_archivo_privada = f'llave_privada_{nombre_persona}.key'
+    nombre_archivo_privada = f"llave_privada_{nombre_persona}.pem"
     guardar_llave_privada(llave_privada, nombre_archivo_privada)
 
     # Obtención de la llave pública
     llave_publica = llave_privada.public_key()
 
     # Almacenamiento de la llave pública en un archivo PEM
-    nombre_archivo_publica = f'llave_publica_{nombre_persona}.key'
+    nombre_archivo_publica = f"llave_publica_{nombre_persona}.pem"
     guardar_llave_publica(llave_publica, nombre_archivo_publica)
+
+
+def ingresar_nombre(nombre_default):
+    """
+    Esta función solicita al usuario el nombre de una persona.
+
+    :param nombre_default: El nombre por defecto que se mostrará al usuario.
+    :type nombre_default: Str
+
+    :return: El nombre ingresado por el usuario.
+    :rtype: Str
+    """
+    nombre = input(f"Ingrese el nombre de la persona (default: {nombre_default}): ")
+    if nombre == "":
+        return nombre_default
+    return nombre
 
 
 def main():
@@ -101,12 +118,23 @@ def main():
 
     :return: None
     """
-    if not os.path.exists('llaves'):
-        os.makedirs('llaves')
+    print("* => Iniciando ejecucion de key_gen *" + "\n")
+    if not os.path.exists("llaves"):
+        print('* => Creando carpeta "/llaves *" ...' + "\n")
+        os.makedirs("llaves")
 
-    generar_y_guardar_llaves('Alice')
+    nombre_default = "Alice"
+    nombre = ingresar_nombre(nombre_default)
+    print(f"* => Generando llaves de {nombre} *" + "\n")
+    generar_y_guardar_llaves(nombre)
 
-    generar_y_guardar_llaves('Bob')
+    nombre_default = "Bob"
+    nombre = ingresar_nombre(nombre_default)
+    generar_y_guardar_llaves(nombre)
+    print(f"* => Generando llaves de {nombre} *" + "\n")
+    generar_y_guardar_llaves(nombre)
+
+    print("* => Finalizando ejecucion de key_gen *" + "\n")
 
 
 if __name__ == "__main__":
