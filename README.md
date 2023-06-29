@@ -14,6 +14,18 @@
 
 ## Instrucciones de uso
 
+- Crea un entorno virtual con el siguiente comando:
+
+```bash
+python -m venv venv
+```
+
+- Activamos el entorno virtual:
+
+```bash
+source venv/bin/activate
+```
+
 - Instalamos las dependencias necesarias para ejecutar el programa:
 
 ```bash
