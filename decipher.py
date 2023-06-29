@@ -6,13 +6,26 @@ import os
 
 
 def descifrar_llave_aes_cifrada(llave_aes_cifrada, llave_privada_bob):
+    """
+    Esta función descifra una llave AES cifrada con la llave privada de Bob.
+
+    :param llave_aes_cifrada: La llave AES cifrada.
+    :type llave_aes_cifrada: bytes
+
+    :param llave_privada_bob: La llave privada de Bob.
+    :type llave_privada_bob: cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKey
+
+    :return: La llave AES descifrada.
+    :rtype: bytes
+
+    """
     llave_aes = llave_privada_bob.decrypt(
         llave_aes_cifrada,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
-            label=None
-        )
+            label=None,
+        ),
     )
     return llave_aes
 
@@ -38,10 +51,9 @@ def verificar_firma(texto, firma, llave_publica_alice):
             firma,
             texto,
             padding.PSS(
-                mgf=padding.MGF1(hashes.SHA256()),
-                salt_length=padding.PSS.MAX_LENGTH
+                mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH
             ),
-            hashes.SHA256()
+            hashes.SHA256(),
         )
         return True
     except:
@@ -49,19 +61,13 @@ def verificar_firma(texto, firma, llave_publica_alice):
 
 
 def main():
-
     # Cargar llave RSA pública
     with open("llaves/llave_publica_Alice.pub", "rb") as f:
-        llave_publica_alice = serialization.load_pem_public_key(
-            f.read()
-        )
+        llave_publica_alice = serialization.load_pem_public_key(f.read())
 
     # Cargar llave RSA privada
     with open("llaves/llave_privada_Bob.pem", "rb") as f:
-        llave_privada_bob = serialization.load_pem_private_key(
-            f.read(),
-            password=None
-        )
+        llave_privada_bob = serialization.load_pem_private_key(f.read(), password=None)
 
     # Punto 1: Descifrar llave AES cifrada con llave privada de Bob
     with open("cifrado/llave_AES_cifrada.key", "rb") as f:
@@ -82,14 +88,15 @@ def main():
     with open("cifrado/Signature_Alice.sig", "rb") as f:
         firma = f.read()
 
-
     if verificar_firma(texto_descifrado, firma, llave_publica_alice):
         print("La firma es válida.")
         print("El mensaje es genuino.")
         print("Contenido del texto plano:")
         print(texto_descifrado.decode())
     else:
-        print("La firma es inválida. El mensaje ha sido alterado o no proviene de Alice.")
+        print(
+            "La firma es inválida. El mensaje ha sido alterado o no proviene de Alice."
+        )
 
 
 if __name__ == "__main__":
