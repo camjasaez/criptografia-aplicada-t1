@@ -1,9 +1,13 @@
+"""
+Este programa genera un par de llaves asimétricas RSA para ambos integrantes del grupo.
+"""
+import os
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
-import os
 
 # El primer programa debe crear un par de llaves asimétricas RSA para ambos integrantes del grupo.
-# Las parejas de llaves deben ser almacenadas en un archivo formato PEM y etiquetadas con el nombre de su dueño.
+# Las parejas de llaves deben ser almacenadas en un archivo-
+# formato PEM y etiquetadas con el nombre de su dueño.
 # Ejemplo: llave_privada_Alice.key y llave_publica_Alice. key (de manera equivalente para Bob)
 # Intercambien los archivos que contienen sus llaves públicas
 
@@ -34,8 +38,8 @@ def guardar_llave_privada(llave_privada, nombre_archivo):
     :return: None
     """
     ruta_archivo = os.path.join("llaves", nombre_archivo)
-    with open(ruta_archivo, "wb") as f:
-        f.write(
+    with open(ruta_archivo, "wb") as archivo:
+        archivo.write(
             llave_privada.private_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PrivateFormat.PKCS8,
@@ -44,7 +48,6 @@ def guardar_llave_privada(llave_privada, nombre_archivo):
         )
 
 
-# Guardamos las llaves en un archivo PEM
 def guardar_llave_publica(llave_publica, nombre_archivo):
     """
     Esta función guarda una llave pública en un archivo.
@@ -58,8 +61,8 @@ def guardar_llave_publica(llave_publica, nombre_archivo):
     :return: None
     """
     ruta_archivo = os.path.join("llaves", nombre_archivo)
-    with open(ruta_archivo, "wb") as f:
-        f.write(
+    with open(ruta_archivo, "wb") as archivo:
+        archivo.write(
             llave_publica.public_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PublicFormat.SubjectPublicKeyInfo,
@@ -67,7 +70,6 @@ def guardar_llave_publica(llave_publica, nombre_archivo):
         )
 
 
-# Generamos y guardamos las llaves para una persona
 def generar_y_guardar_llaves(nombre_persona):
     """
     Esta función genera y guarda un par de llaves pública y privada RSA para una persona.
